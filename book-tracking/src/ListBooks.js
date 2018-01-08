@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
-//import ShelfForm from './ShelfForm'
+import ShelfForm from './ShelfForm'
 //import {Link} from 'react-router-dom'
 //import PropTypes from 'prop-types'
 //import SortBy from 'sort-by'
 //import escapeRegExp from 'escape-string-regexp'
 
 class ListBooks extends Component {
-	// static PropTypes = {
-	// 	contacts: PropTypes.array.isRequired,
-	// 	onDeleteContact: PropTypes.func.isRequired
-	// }
 	state = {
-		query: ''
+		// query: ''
 	}
+
+
+
 
 	// updateQuery = (query) => {
 	// 	this.setState({query:query.trim()})
@@ -22,7 +21,7 @@ class ListBooks extends Component {
 
 	render() {
 		const {books} = this.props
-		const {query} = this.state
+		//const {query} = this.state
 		const currentShelf = this.props.activeShelf
 		// function isCurrentlyReading(book) {
 		//   return book.shelf === 'currentlyReading';
@@ -37,13 +36,10 @@ class ListBooks extends Component {
                       <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}></div>
                         <div className="book-shelf-changer">
-                          <select value={this.state.shelf} onChange={this.handleChange}>
-					          <option value="none" disabled>Move to...</option>
-					          <option value="currentlyReading">Currently Reading</option>
-					          <option value="wantToRead">Want to Read</option>
-					          <option value="read">Read</option>
-					          <option value="none">None</option>
-					        </select>
+                        	<ShelfForm
+                        		shelfBook={book.shelf}
+                        		id={book.id}
+                        	/>
                         </div>
                       </div>
                       <div className="book-title">{book.title}</div>

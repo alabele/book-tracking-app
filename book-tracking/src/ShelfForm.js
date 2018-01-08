@@ -1,37 +1,31 @@
 import React, { Component } from 'react'
 
 class ShelfForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state        = { shelf: '' } ;
-    this.handleChange = this.handleChange.bind(this);
+state = {
+  value: this.props.shelfBook
+}
 
-  }
-  // handleSubmit = (e) => {
-  //   e.preventDefault
-  //   if (this.props.onUpdateShelf)
-  //     this.props.onUpdateShelf(values)
-  // }
-
-  // handleChange(event) {
-  //   this.setState({value: event.target.value});
-  // }
-
-  // When select value is changed, update selected value
-  handleChange(event) {
-    this.setState({ shelf: event.currentTarget.value });
-    this.props.onUpdateShelf
-  }
+// When select value is changed, update selected value
+handleChange(id, event) {
+  this.setState({ value: event });
+  console.log(id);
+  //this.props.onUpdateShelf(id, event)
+}
 
   render() {
+    //const myShelf = this.props.shelfBook
     return (
-        <select value={this.state.shelf} onChange={this.handleChange}>
+      <div>
+        <select value={this.state.value} onChange={(event)=> this.handleChange(this.props.id, event.target.value)}>
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>
           <option value="read">Read</option>
           <option value="none">None</option>
         </select>
+        <span>{this.state.value}</span>
+        <span>{this.props.id}</span>
+        </div>
     );
   }
 }
