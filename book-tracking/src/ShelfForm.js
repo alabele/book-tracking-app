@@ -9,7 +9,7 @@ state = {
 handleChange(id, event) {
   this.setState({ value: event });
   console.log(id);
-  //this.props.onUpdateShelf(id, event)
+  this.props.myFunc(id, event)
 }
 
   render() {

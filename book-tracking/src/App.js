@@ -21,12 +21,22 @@ class BooksApp extends React.Component {
     })
   }
 
-  updateShelf(book, shelf) {
-    BooksAPI.update(book, shelf).then((book)=> {
-     console.log("this worked")
-    })
-  }
 
+updateShelf(bookId, shelf) {
+    function myBook(b) {
+        return b.id === bookId;
+    }
+    let myObject = this.state.books
+    myObject = myObject.find(myBook)
+    myObject.shelf = shelf
+    console.log(myObject)
+    BooksAPI.update(bookId, shelf).then(book => {
+     this.setState(state => ({
+        books: state.books.filter((c) => c.id !== bookId).concat(myObject)
+     }))
+   })
+  BooksAPI.update(bookId, shelf)
+ }
 
 
   render() {
@@ -46,24 +56,30 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Currently Reading Here</h2>
                    <ListBooks
                       books={this.state.books}
-                      onUpdateShelf={this.updateShelf}
                       activeShelf="currentlyReading"
+                      onUpdateShelf={(book, shelf)=> {
+                        this.updateShelf(book,shelf)
+                      }}
                    />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                      <ListBooks
                       books={this.state.books}
-                      onUpdateShelf={this.updateShelf}
                       activeShelf="wantToRead"
+                      onUpdateShelf={(book, shelf)=> {
+                        this.updateShelf(book,shelf)
+                      }}
                    />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
                    <ListBooks
                       books={this.state.books}
-                      onUpdateShelf={this.updateShelf}
                       activeShelf="read"
+                      onUpdateShelf={(book, shelf)=> {
+                        this.updateShelf(book,shelf)
+                      }}
                    />
                 </div>
               </div>

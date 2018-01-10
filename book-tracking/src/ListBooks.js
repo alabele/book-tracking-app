@@ -23,6 +23,7 @@ class ListBooks extends Component {
 		const {books} = this.props
 		//const {query} = this.state
 		const currentShelf = this.props.activeShelf
+		const myNewFunc = this.props.onUpdateShelf
 		// function isCurrentlyReading(book) {
 		//   return book.shelf === 'currentlyReading';
 		// }
@@ -39,6 +40,7 @@ class ListBooks extends Component {
                         	<ShelfForm
                         		shelfBook={book.shelf}
                         		id={book.id}
+                        		myFunc={myNewFunc}
                         	/>
                         </div>
                       </div>
