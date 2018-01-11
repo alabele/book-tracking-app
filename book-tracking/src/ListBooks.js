@@ -12,22 +12,10 @@ class ListBooks extends Component {
 
 
 
-
-	// updateQuery = (query) => {
-	// 	this.setState({query:query.trim()})
-	// }
-
-
-
 	render() {
 		const {books} = this.props
-		//const {query} = this.state
 		const currentShelf = this.props.activeShelf
 		const myNewFunc = this.props.onUpdateShelf
-		// function isCurrentlyReading(book) {
-		//   return book.shelf === 'currentlyReading';
-		// }
-		//let currentlyReadingShelf = books.map().filter(books.shelf === 'currentlyReading')
 		return (
 			<div className="bookshelf-books">
                 <ol className="books-grid">

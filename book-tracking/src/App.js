@@ -4,6 +4,7 @@ import './App.css'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
 import {Link, Route} from 'react-router-dom'
+//import escapeRegExp from 'escape-string-regexp'
 
 class BooksApp extends React.Component {
   state = {
@@ -39,6 +40,14 @@ class BooksApp extends React.Component {
     BooksAPI.update(myObject, shelf)
    }
 
+  // bookSearch(query) {
+  //   console.log(query)
+  //   BooksAPI.search(query)
+  //     BooksAPI.search(query).then(book => {
+  //      this.setState({this.state.books})
+  //   })
+  //  }
+
 
   render() {
     return (
@@ -50,6 +59,9 @@ class BooksApp extends React.Component {
             onUpdateShelf={(book, shelf)=> {
                         this.updateShelf(book,shelf)
                       }}
+            // onBookSearch={(query)=> {
+            //             this.bookSearch(query)
+            //           }}
 
           />
        )} />
