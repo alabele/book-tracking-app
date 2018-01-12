@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 //import escapeRegExp from 'escape-string-regexp'
-import ShelfForm from './ShelfForm'
+import SearchShelfForm from './SearchShelfForm'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
@@ -11,12 +11,9 @@ class SearchBooks extends Component {
 	}
 
 	componentDidMount() {
-	    BooksAPI.getAll().then((allBooks)=> {
-	      this.setState({allBooks})
-	    })
-	    // BooksAPI.search("a").then((allBooks) => {
-	    // 	this.setState({allBooks})
-	    // })
+	     // BooksAPI.getAll().then((allBooks)=> {
+	     //   this.setState({allBooks})
+	     // })
   	}
 
 	updateQuery = (query) => {
@@ -31,16 +28,18 @@ class SearchBooks extends Component {
 		let myBookIds = prevBookArray.map((book) =>book.id)
 		console.log( myBookIds)
 		console.log(prevBookArray)
-		BooksAPI.search(query).then(allBooks => {
+
+
+		BooksAPI.search(query).then(searchQuery => {
 			//Grab array of all 20 books in the new query
 			let newQuery = []
-			newQuery = allBooks
+			newQuery = searchQuery
 
 			//set a shelf property to "none" for newQuery
-			newQuery.map((book) => book.shelf ="howdy there")
+			newQuery.map((book) => book.shelf ="none")
 
 			//Filter out existing books (that already have a shelf defined)
-			newQuery.filter((c) => c.id !== myBookIds)
+			// newQuery.filter((c) => c.id === myBookIds)
 
 			console.log(newQuery)
 		      this.setState(state => ({
@@ -52,17 +51,18 @@ class SearchBooks extends Component {
 
 	render() {
 		const myNewFunc = this.props.onUpdateShelf
-		 const {allBooks} = this.state
-		// let showingBooks
-		// if (query) {
+		const {allBooks, query} = this.state
+		let showingBooks
+		if (query) {
 
+			showingBooks= allBooks
 		// 	const match = new RegExp(escapeRegExp(query), 'i')
 		// 	showingBooks = this.state.allBooks.filter((book) => match.test(book.title) || match.test(book.authors))
 
-		//  } else {
-		//  	showingBooks = this.state.allBooks
+		  } else {
+		 	showingBooks = []
 
-		//  }
+		 }
 
 
 		return(
@@ -94,13 +94,18 @@ class SearchBooks extends Component {
 		        </div>
 	            <div className="search-books-results">
 	              <ol className="books-grid">
-	              	{allBooks.map((book) =>
+	              	{showingBooks.map((book) =>
 	                  <li key={book.id}>
 	                    <div className="book">
 	                      <div className="book-top">
 	                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}></div>
 	                        <div className="book-shelf-changer">
-
+	                        	<SearchShelfForm
+	                        		shelfBook={book.shelf}
+	                        		id={book.id}
+	                        		searchState={this.state.allBooks}
+	                        		myFunc={myNewFunc}
+	                        	/>
 	                        </div>
 	                      </div>
 	                      <div className="book-title">{book.title}</div>
