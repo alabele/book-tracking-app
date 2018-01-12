@@ -1,63 +1,64 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-//import escapeRegExp from 'escape-string-regexp'
+import escapeRegExp from 'escape-string-regexp'
 import SearchShelfForm from './SearchShelfForm'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
 	state = {
 		query: '',
-		allBooks:[]
+		shelvedBooks:[],
+		searchedBooks:[]
 	}
 
 	componentDidMount() {
-	     // BooksAPI.getAll().then((allBooks)=> {
-	     //   this.setState({allBooks})
-	     // })
+	     BooksAPI.getAll().then((shelvedBooks)=> {
+	       this.setState({shelvedBooks})
+	     })
   	}
 
 	updateQuery = (query) => {
 		// trim query string
 		this.setState({query:query.trim()})
 
-		// Grab existing books array
-		let prevBookArray = this.state.allBooks
+		// Grab shelved books array
+		let prevBookArray = this.state.shelvedBooks
 		//let prevBookArray = this.props.books
 
-		// Grab IDs of existing books array
+		// Grab IDs of shelved books array
 		let myBookIds = prevBookArray.map((book) =>book.id)
-		console.log( myBookIds)
-		console.log(prevBookArray)
+		// console.log( myBookIds)
+		// console.log(prevBookArray)
 
 
 		BooksAPI.search(query).then(searchQuery => {
 			//Grab array of all 20 books in the new query
-			let newQuery = []
-			newQuery = searchQuery
 
-			//set a shelf property to "none" for newQuery
-			newQuery.map((book) => book.shelf ="none")
+			//console.log(searchQuery)
+			if (searchQuery.length > 0) {
+				//Filter out any already shelved books from search array
+				searchQuery = searchQuery.filter((c) => false === myBookIds.includes(c.id))
 
-			//Filter out existing books (that already have a shelf defined)
-			// newQuery.filter((c) => c.id === myBookIds)
+				//For remaining books, set a shelf property to "none" for newQuery
+				searchQuery.map((book) => book.shelf ="none")
 
-			console.log(newQuery)
-		      this.setState(state => ({
-		          allBooks: state.allBooks.concat(newQuery)
-	       }))
+				//console.log(newQuery)
+			      this.setState(state => ({
+			        // searchedBooks: state.searchedBooks.concat(newQuery)
+			         searchedBooks: searchQuery
+		       }))
+		  	}
 	     })
 	}
 
 
 	render() {
 		const myNewFunc = this.props.onUpdateShelf
-		const {allBooks, query} = this.state
+		const {query} = this.state
 		let showingBooks
 		if (query) {
-
-			showingBooks= allBooks
-		// 	const match = new RegExp(escapeRegExp(query), 'i')
-		// 	showingBooks = this.state.allBooks.filter((book) => match.test(book.title) || match.test(book.authors))
+			const match = new RegExp(escapeRegExp(query), 'i')
+		 	showingBooks = this.state.searchedBooks.filter((book) => match.test(book.title) || match.test(book.authors))
 
 		  } else {
 		 	showingBooks = []
@@ -88,7 +89,6 @@ class SearchBooks extends Component {
 	            		value={this.state.query}
 						onChange={(event)=> this.updateQuery(event.target.value)}
             		/>
-            		{JSON.stringify(this.state.query)}
 
 		          </div>
 		        </div>
@@ -103,7 +103,7 @@ class SearchBooks extends Component {
 	                        	<SearchShelfForm
 	                        		shelfBook={book.shelf}
 	                        		id={book.id}
-	                        		searchState={this.state.allBooks}
+	                        		searchState={this.state.searchedBooks}
 	                        		myFunc={myNewFunc}
 	                        	/>
 	                        </div>

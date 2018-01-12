@@ -23,8 +23,6 @@ handleChange(id, event) {
           <option value="read">Read</option>
           <option value="none">None</option>
         </select>
-        <span>{this.state.value}</span>
-        <span>{this.props.id}</span>
         </div>
     );
   }

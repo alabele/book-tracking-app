@@ -50,7 +50,6 @@ class BooksApp extends React.Component {
       BooksAPI.update(bookId, shelf).then(book => {
        this.setState(state => ({
           books: state.books.filter((c) => c.id !== bookId).concat(myObject)
-          //allBooks: state.allBooks.splice(myObject)
        }))
      })
     BooksAPI.update(myObject, shelf)
