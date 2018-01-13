@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import ShelfForm from './ShelfForm'
-//import {Link} from 'react-router-dom'
-//import PropTypes from 'prop-types'
-//import SortBy from 'sort-by'
-//import escapeRegExp from 'escape-string-regexp'
+import PropTypes from 'prop-types'
 
 class ListBooks extends Component {
+	static PropTypes = {
+		books: PropTypes.array.isRequired,
+		onUpdateShelf: PropTypes.func.isRequired
+	}
 	state = {
 		// query: ''
 	}
@@ -43,9 +44,9 @@ class ListBooks extends Component {
 	}
 }
 
-// ListContacts.propTypes = {
-// 	contacts: PropTypes.array.isRequired,
-// 	onDeleteContact: PropTypes.func.isRequired
-// }
+ ListBooks.propTypes = {
+ 	books: PropTypes.array.isRequired,
+ 	onUpdateShelf: PropTypes.func.isRequired
+ }
 
 export default ListBooks

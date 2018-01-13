@@ -23,28 +23,27 @@ class SearchBooks extends Component {
 
 		// Grab shelved books array
 		let prevBookArray = this.state.shelvedBooks
-		//let prevBookArray = this.props.books
 
 		// Grab IDs of shelved books array
 		let myBookIds = prevBookArray.map((book) =>book.id)
-		// console.log( myBookIds)
-		// console.log(prevBookArray)
-
 
 		BooksAPI.search(query).then(searchQuery => {
-			//Grab array of all 20 books in the new query
 
-			//console.log(searchQuery)
 			if (searchQuery.length > 0) {
-				//Filter out any already shelved books from search array
+				//Grab the IDs of any already shelved books from SearchedBooks array
+				let shelvedSearchBooksID = searchQuery.filter((c) => true === myBookIds.includes(c.id)).map((book) =>book.id)
+
+				let shelvedSearchBooks = prevBookArray.filter((c) => false === shelvedSearchBooksID.includes(c.id))
+
+				//Remove any already shelved books from search array
 				searchQuery = searchQuery.filter((c) => false === myBookIds.includes(c.id))
 
-				//For remaining books, set a shelf property to "none" for newQuery
+				//For remaining books, set a shelf property to "none" for newQuery + add back in shelved Books
 				searchQuery.map((book) => book.shelf ="none")
+				searchQuery = searchQuery.concat(shelvedSearchBooks)
 
 				//console.log(newQuery)
 			      this.setState(state => ({
-			        // searchedBooks: state.searchedBooks.concat(newQuery)
 			         searchedBooks: searchQuery
 		       }))
 		  	}
