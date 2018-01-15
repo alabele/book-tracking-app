@@ -30,7 +30,6 @@ class BooksApp extends React.Component {
       let myObject = this.state.books
       myObject = myObject.find(myBook)
       myObject.shelf = shelf
-      console.log(myObject)
       BooksAPI.update(bookId, shelf).then(book => {
        this.setState(state => ({
           books: state.books.filter((c) => c.id !== bookId).concat(myObject)
@@ -46,7 +45,6 @@ class BooksApp extends React.Component {
       let myObject = searchState
       myObject = myObject.find(myBook)
       myObject.shelf = shelf
-      console.log(myObject)
       BooksAPI.update(bookId, shelf).then(book => {
        this.setState(state => ({
           books: state.books.filter((c) => c.id !== bookId).concat(myObject)
@@ -78,33 +76,39 @@ class BooksApp extends React.Component {
               <div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
-                   <ListBooks
-                      books={this.state.books}
-                      activeShelf="currentlyReading"
-                      onUpdateShelf={(book, shelf)=> {
-                        this.updateShelf(book,shelf)
-                      }}
-                   />
+                    <div className="bookshelf-books">
+                       <ListBooks
+                          books={this.state.books}
+                          activeShelf="currentlyReading"
+                          onUpdateShelf={(book, shelf)=> {
+                            this.updateShelf(book,shelf)
+                          }}
+                       />
+                    </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
-                     <ListBooks
-                      books={this.state.books}
-                      activeShelf="wantToRead"
-                      onUpdateShelf={(book, shelf)=> {
-                        this.updateShelf(book,shelf)
-                      }}
-                   />
+                    <div className="bookshelf-books">
+                         <ListBooks
+                          books={this.state.books}
+                          activeShelf="wantToRead"
+                          onUpdateShelf={(book, shelf)=> {
+                            this.updateShelf(book,shelf)
+                          }}
+                       />
+                    </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
-                   <ListBooks
-                      books={this.state.books}
-                      activeShelf="read"
-                      onUpdateShelf={(book, shelf)=> {
-                        this.updateShelf(book,shelf)
-                      }}
-                   />
+                    <div className="bookshelf-books">
+                       <ListBooks
+                          books={this.state.books}
+                          activeShelf="read"
+                          onUpdateShelf={(book, shelf)=> {
+                            this.updateShelf(book,shelf)
+                          }}
+                       />
+                    </div>
                 </div>
               </div>
             </div>

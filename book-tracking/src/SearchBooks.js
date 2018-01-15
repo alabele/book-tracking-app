@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
-import SearchShelfForm from './SearchShelfForm'
+import ListBooks from './ListBooks'
+import ShelfForm from './ShelfForm'
 import * as BooksAPI from './BooksAPI'
+import _ from 'lodash'
 
 class SearchBooks extends Component {
 	state = {
@@ -29,7 +31,12 @@ class SearchBooks extends Component {
 
 		BooksAPI.search(query).then(searchQuery => {
 
-			if (searchQuery.length > 0) {
+			if (searchQuery === "" || searchQuery === undefined ) {
+                this.setState({ searchedBooks: [] });
+                return
+            }
+
+			else if (searchQuery.length > 0) {
 				//Grab the IDs of any already shelved books from SearchedBooks array
 				let shelvedSearchBooksID = searchQuery.filter((c) => true === myBookIds.includes(c.id)).map((book) =>book.id)
 
@@ -42,7 +49,6 @@ class SearchBooks extends Component {
 				searchQuery.map((book) => book.shelf ="none")
 				searchQuery = searchQuery.concat(shelvedSearchBooks)
 
-				//console.log(newQuery)
 			      this.setState(state => ({
 			         searchedBooks: searchQuery
 		       }))
@@ -94,24 +100,14 @@ class SearchBooks extends Component {
 	            <div className="search-books-results">
 	              <ol className="books-grid">
 	              	{showingBooks.map((book) =>
-	                  <li key={book.id}>
-	                    <div className="book">
-	                      <div className="book-top">
-	                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}></div>
-	                        <div className="book-shelf-changer">
-	                        	<SearchShelfForm
-	                        		shelfBook={book.shelf}
-	                        		id={book.id}
-	                        		searchState={this.state.searchedBooks}
-	                        		myFunc={myNewFunc}
-	                        	/>
-	                        </div>
-	                      </div>
-	                      <div className="book-title">{book.title}</div>
-	                      <div className="book-authors">{book.authors[0]}</div>
-	                    </div>
-	                  </li>
-	                  )}
+			              <ListBooks
+		                      books={this.props.books}
+		                      activeShelf="all"
+		                      onUpdateShelf={(book, shelf)=> {
+		                        this.updateShelf(book,shelf)
+		                      }}
+		                   />
+                    )}
 	              </ol>
 	            </div>
           </div>

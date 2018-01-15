@@ -8,7 +8,6 @@ state = {
 // When select value is changed, update selected value
 handleChange(id, event) {
   this.setState({ value: event });
-  console.log(id);
   this.props.myFunc(id, event)
 }
 
