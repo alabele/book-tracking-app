@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import ListBooks from './ListBooks'
-import ShelfForm from './ShelfForm'
+//import ShelfForm from './ShelfForm'
 import * as BooksAPI from './BooksAPI'
 import _ from 'lodash'
 
@@ -24,7 +24,8 @@ class SearchBooks extends Component {
 		this.setState({query:query.trim()})
 
 		// Grab shelved books array
-		let prevBookArray = this.state.shelvedBooks
+		//let prevBookArray = this.state.shelvedBooks
+		let prevBookArray = this.props.books
 
 		// Grab IDs of shelved books array
 		let myBookIds = prevBookArray.map((book) =>book.id)
@@ -99,15 +100,11 @@ class SearchBooks extends Component {
 		        </div>
 	            <div className="search-books-results">
 	              <ol className="books-grid">
-	              	{showingBooks.map((book) =>
 			              <ListBooks
 		                      books={this.props.books}
 		                      activeShelf="all"
-		                      onUpdateShelf={(book, shelf)=> {
-		                        this.updateShelf(book,shelf)
-		                      }}
+		                      onUpdateShelf={this.props.onUpdateShelf}
 		                   />
-                    )}
 	              </ol>
 	            </div>
           </div>

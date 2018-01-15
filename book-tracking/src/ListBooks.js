@@ -17,7 +17,7 @@ class ListBooks extends Component {
     let bookArray = []
     if (currentShelf === "all") {
       bookArray = books
-    } else if (currentShelf !== "all") {
+    } else  {
       bookArray = books.filter(book=>book.shelf===currentShelf)
     }
     console.log(bookArray)
