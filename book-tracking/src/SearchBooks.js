@@ -9,15 +9,15 @@ import _ from 'lodash'
 class SearchBooks extends Component {
 	state = {
 		query: '',
-		shelvedBooks:[],
+		//shelvedBooks:[],
 		searchedBooks:[]
 	}
 
-	componentDidMount() {
-	     BooksAPI.getAll().then((shelvedBooks)=> {
-	       this.setState({shelvedBooks})
-	     })
-  	}
+	// componentDidMount() {
+	//      BooksAPI.getAll().then((shelvedBooks)=> {
+	//        this.setState({shelvedBooks})
+	//      })
+ //  	}
 
 	updateQuery = (query) => {
 		// trim query string
@@ -59,9 +59,9 @@ class SearchBooks extends Component {
 
 
 	render() {
-		const myNewFunc = this.props.onUpdateShelf
+		//const myNewFunc = this.props.onUpdateShelf
 		const {query} = this.state
-		let showingBooks
+		let showingBooks =[]
 		if (query) {
 			const match = new RegExp(escapeRegExp(query), 'i')
 		 	showingBooks = this.state.searchedBooks.filter((book) => match.test(book.title) || match.test(book.authors))
@@ -104,6 +104,8 @@ class SearchBooks extends Component {
 		                      books={this.props.books}
 		                      activeShelf="all"
 		                      onUpdateShelf={this.props.onUpdateShelf}
+		                      //searchedBooks={this.state.searchedBooks}
+		                      showingBooks={showingBooks}
 		                   />
 	              </ol>
 	            </div>

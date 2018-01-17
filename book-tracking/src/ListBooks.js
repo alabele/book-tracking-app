@@ -11,16 +11,15 @@ class ListBooks extends Component {
 
 
 	render() {
-		const {books} = this.props
+		const {books, showingBooks} = this.props
 		const currentShelf = this.props.activeShelf
 		const myNewFunc = this.props.onUpdateShelf
     let bookArray = []
     if (currentShelf === "all") {
-      bookArray = books
+      bookArray = showingBooks
     } else  {
       bookArray = books.filter(book=>book.shelf===currentShelf)
     }
-    console.log(bookArray)
 		return (
                 <ol className="books-grid">
 
