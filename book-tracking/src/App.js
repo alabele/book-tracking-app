@@ -3,7 +3,8 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
-import {Link, Route} from 'react-router-dom'
+import ErrorPage404 from './ErrorPage404'
+import {Link, Route, Switch} from 'react-router-dom'
 //import escapeRegExp from 'escape-string-regexp'
 
 class BooksApp extends React.Component {
@@ -58,68 +59,70 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-
-        <Route path="/search" exact render={() => (
-          <SearchBooks
-            books={this.state.books}
-            onUpdateShelf={(book, shelf)=> {
-                this.updateShelf(book,shelf)
-              }}
-          />
-       )} />
-       <Route path="/" exact render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                    <div className="bookshelf-books">
-                       <ListBooks
-                          books={this.state.books}
-                          activeShelf="currentlyReading"
-                          onUpdateShelf={(book, shelf)=> {
-                            this.updateShelf(book,shelf)
-                          }}
-                       />
-                    </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                    <div className="bookshelf-books">
+        <Switch>
+          <Route path="/search" exact render={() => (
+            <SearchBooks
+              books={this.state.books}
+              onUpdateShelf={(book, shelf)=> {
+                  this.updateShelf(book,shelf)
+                }}
+            />
+         )} />
+         <Route path="/" exact render={() => (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                <div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Currently Reading</h2>
+                      <div className="bookshelf-books">
                          <ListBooks
-                          books={this.state.books}
-                          activeShelf="wantToRead"
-                          onUpdateShelf={(book, shelf)=> {
-                            this.updateShelf(book,shelf)
-                          }}
-                       />
-                    </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                    <div className="bookshelf-books">
-                       <ListBooks
-                          books={this.state.books}
-                          activeShelf="read"
-                          onUpdateShelf={(book, shelf)=> {
-                            this.updateShelf(book,shelf)
-                          }}
-                       />
-                    </div>
+                            books={this.state.books}
+                            activeShelf="currentlyReading"
+                            onUpdateShelf={(book, shelf)=> {
+                              this.updateShelf(book,shelf)
+                            }}
+                         />
+                      </div>
+                  </div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Want to Read</h2>
+                      <div className="bookshelf-books">
+                           <ListBooks
+                            books={this.state.books}
+                            activeShelf="wantToRead"
+                            onUpdateShelf={(book, shelf)=> {
+                              this.updateShelf(book,shelf)
+                            }}
+                         />
+                      </div>
+                  </div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Read</h2>
+                      <div className="bookshelf-books">
+                         <ListBooks
+                            books={this.state.books}
+                            activeShelf="read"
+                            onUpdateShelf={(book, shelf)=> {
+                              this.updateShelf(book,shelf)
+                            }}
+                         />
+                      </div>
+                  </div>
                 </div>
               </div>
+              <div className="open-search">
+                <Link
+                  to="/search">
+                  Add a book
+                </Link>
+              </div>
             </div>
-            <div className="open-search">
-              <Link
-                to="/search">
-                Add a book
-              </Link>
-            </div>
-          </div>
-        )}/>
+          )}/>
+          <Route component={ErrorPage404}/>
+        </Switch>
       </div>
     )
   }

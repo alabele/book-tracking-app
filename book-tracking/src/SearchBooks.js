@@ -13,13 +13,7 @@ class SearchBooks extends Component {
 		searchedBooks:[]
 	}
 
-	// componentDidMount() {
-	//      BooksAPI.getAll().then((shelvedBooks)=> {
-	//        this.setState({shelvedBooks})
-	//      })
- //  	}
-
-	updateQuery = (query) => {
+	updateQuery = _.debounce((query) => {
 		// trim query string
 		this.setState({query:query.trim()})
 
@@ -55,7 +49,9 @@ class SearchBooks extends Component {
 		       }))
 		  	}
 	     })
-	}
+
+    }, 200);
+/* Debounce help from: https://stackoverflow.com/questions/23123138/perform-debounce-in-react-js */
 
 
 	render() {
