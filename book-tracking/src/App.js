@@ -9,12 +9,6 @@ import {Link, Route, Switch} from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     books: []
   }
   componentDidMount() {
@@ -24,37 +18,19 @@ class BooksApp extends React.Component {
   }
 
 
-  updateShelf(bookId, shelf) {
+  updateShelf(bookId, shelf, myState) {
       function myBook(b) {
           return b.id === bookId;
       }
-      let myObject = this.state.books
+     let myObject = myState
       myObject = myObject.find(myBook)
       myObject.shelf = shelf
-      BooksAPI.update(bookId, shelf).then(book => {
+      BooksAPI.update(myObject, shelf).then(book => {
        this.setState(state => ({
           books: state.books.filter((c) => c.id !== bookId).concat(myObject)
        }))
      })
-    BooksAPI.update(myObject, shelf)
    }
-
-   addBook(bookId, shelf, searchState) {
-      function myBook(b) {
-          return b.id === bookId;
-      }
-      let myObject = searchState
-      myObject = myObject.find(myBook)
-      myObject.shelf = shelf
-      BooksAPI.update(bookId, shelf).then(book => {
-       this.setState(state => ({
-          books: state.books.filter((c) => c.id !== bookId).concat(myObject)
-       }))
-     })
-    BooksAPI.update(myObject, shelf)
-   }
-
-
 
   render() {
     return (
@@ -63,8 +39,8 @@ class BooksApp extends React.Component {
           <Route path="/search" exact render={() => (
             <SearchBooks
               books={this.state.books}
-              onUpdateShelf={(book, shelf)=> {
-                  this.updateShelf(book,shelf)
+              onUpdateShelf={(book, shelf, searchState)=> {
+                  this.updateShelf(book,shelf, searchState)
                 }}
             />
          )} />
@@ -81,8 +57,9 @@ class BooksApp extends React.Component {
                          <ListBooks
                             books={this.state.books}
                             activeShelf="currentlyReading"
-                            onUpdateShelf={(book, shelf)=> {
-                              this.updateShelf(book,shelf)
+                            myState={this.state.books}
+                            onUpdateShelf={(book, shelf, myState)=> {
+                              this.updateShelf(book,shelf,myState)
                             }}
                          />
                       </div>
@@ -93,9 +70,11 @@ class BooksApp extends React.Component {
                            <ListBooks
                             books={this.state.books}
                             activeShelf="wantToRead"
-                            onUpdateShelf={(book, shelf)=> {
-                              this.updateShelf(book,shelf)
+                            myState={this.state.books}
+                            onUpdateShelf={(book, shelf, myState)=> {
+                              this.updateShelf(book,shelf,myState)
                             }}
+
                          />
                       </div>
                   </div>
@@ -105,9 +84,11 @@ class BooksApp extends React.Component {
                          <ListBooks
                             books={this.state.books}
                             activeShelf="read"
-                            onUpdateShelf={(book, shelf)=> {
-                              this.updateShelf(book,shelf)
+                            myState={this.state.books}
+                            onUpdateShelf={(book, shelf, myState)=> {
+                              this.updateShelf(book,shelf,myState)
                             }}
+
                          />
                       </div>
                   </div>

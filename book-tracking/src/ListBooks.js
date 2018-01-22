@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
+import React  from 'react'
 import ShelfForm from './ShelfForm'
 import PropTypes from 'prop-types'
 
-class ListBooks extends Component {
-	static PropTypes = {
-		books: PropTypes.array.isRequired,
-		onUpdateShelf: PropTypes.func.isRequired
-	}
+function ListBooks(props) {
+	// static PropTypes = {
+	// 	books: PropTypes.array.isRequired,
+	// 	onUpdateShelf: PropTypes.func.isRequired
+	// }
 
-
-
-	render() {
-		const {books, showingBooks} = this.props
-		const currentShelf = this.props.activeShelf
-		const myNewFunc = this.props.onUpdateShelf
+		const {books, showingBooks} = props
+		const currentShelf = props.activeShelf
+		const myNewFunc = props.onUpdateShelf
+    const myState = props.myState
     let bookArray = []
     if (currentShelf === "all") {
       bookArray = showingBooks
@@ -33,6 +31,7 @@ class ListBooks extends Component {
                         		shelfBook={book.shelf}
                         		id={book.id}
                         		myFunc={myNewFunc}
+                            myState={myState}
                         	/>
                         </div>
                       </div>
@@ -43,7 +42,6 @@ class ListBooks extends Component {
                   )}
              	</ol>
 		)
-	}
 }
 
  ListBooks.propTypes = {

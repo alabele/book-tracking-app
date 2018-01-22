@@ -9,48 +9,46 @@ import _ from 'lodash'
 class SearchBooks extends Component {
 	state = {
 		query: '',
-		//shelvedBooks:[],
 		searchedBooks:[]
 	}
 
 	updateQuery = _.debounce((query) => {
 		// trim query string
-		this.setState({query:query.trim()})
+		this.setState({query:query})
 
-		// Grab shelved books array
-		//let prevBookArray = this.state.shelvedBooks
+		// Grab shelved books arrays
 		let prevBookArray = this.props.books
 
 		// Grab IDs of shelved books array
 		let myBookIds = prevBookArray.map((book) =>book.id)
 
-		BooksAPI.search(query).then(searchQuery => {
+		if (query.length >0){
+			BooksAPI.search(query).then(searchQuery => {
 
-			if (searchQuery === "" || searchQuery === undefined ) {
-                this.setState({ searchedBooks: [] });
-                return
-            }
+				if (searchQuery === "" || searchQuery === undefined ) {
+	                this.setState({ searchedBooks: [] });
+	                return
+	            }
 
-			else if (searchQuery.length > 0) {
-				//Grab the IDs of any already shelved books from SearchedBooks array
-				let shelvedSearchBooksID = searchQuery.filter((c) => true === myBookIds.includes(c.id)).map((book) =>book.id)
+				else if (searchQuery.length > 0) {
+					//Grab the IDs of any already shelved books from SearchedBooks array
+					let shelvedSearchBooksID = searchQuery.filter((c) => true === myBookIds.includes(c.id)).map((book) =>book.id)
+					let shelvedSearchBooks = prevBookArray.filter((c) => true === shelvedSearchBooksID.includes(c.id))
+					//Remove any already shelved books from search array
+					searchQuery = searchQuery.filter((c) => false === myBookIds.includes(c.id))
 
-				let shelvedSearchBooks = prevBookArray.filter((c) => false === shelvedSearchBooksID.includes(c.id))
+					//For remaining books, set a shelf property to "none" for newQuery + add back in shelved Books
+					searchQuery.map((book) => book.shelf ="none")
+					searchQuery = searchQuery.concat(shelvedSearchBooks)
 
-				//Remove any already shelved books from search array
-				searchQuery = searchQuery.filter((c) => false === myBookIds.includes(c.id))
+				      this.setState(state => ({
+				         searchedBooks: searchQuery
+			       }))
+			  	}
+		     })
+		}
 
-				//For remaining books, set a shelf property to "none" for newQuery + add back in shelved Books
-				searchQuery.map((book) => book.shelf ="none")
-				searchQuery = searchQuery.concat(shelvedSearchBooks)
-
-			      this.setState(state => ({
-			         searchedBooks: searchQuery
-		       }))
-		  	}
-	     })
-
-    }, 200);
+    }, 100);
 /* Debounce help from: https://stackoverflow.com/questions/23123138/perform-debounce-in-react-js */
 
 
@@ -102,6 +100,7 @@ class SearchBooks extends Component {
 		                      onUpdateShelf={this.props.onUpdateShelf}
 		                      //searchedBooks={this.state.searchedBooks}
 		                      showingBooks={showingBooks}
+		                      myState={this.state.searchedBooks}
 		                   />
 	              </ol>
 	            </div>
